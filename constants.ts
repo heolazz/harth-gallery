@@ -102,7 +102,7 @@ export const DESIGN_PROJECTS: Project[] = [
     title: 'Business Capital Loan Banner',
     category: 'Digital Promotion',
     imageUrl: '/assets/projects/Banner Pinjaman Butuh Modal.jpg',
-    description: 'A professional promotional banner for business capital loans, designed for LinkUMKM applications.',
+    description: 'A professional promotional banner for business capital loans.',
     year: '2023',
     orientation: 'landscape',
     client: 'BPR HANEDA',
