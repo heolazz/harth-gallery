@@ -65,10 +65,35 @@ const ArtGallery: React.FC<ArtGalleryProps> = ({ isVisible, innerRef, onSelectAr
         </div>
 
         <footer className="mt-40 text-center border-t border-stone-200 pt-16 pb-8">
-          <div className="mb-8">
-            <h4 className="font-serif text-2xl text-stone-900">Harth Gallery</h4>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
+            <div className="text-left">
+              <h4 className="font-serif text-2xl text-stone-900 mb-2">Harth Gallery</h4>
+              <p className="text-stone-400 text-sm italic font-serif">A digital exhibition of branding and illustrations.</p>
+            </div>
+
+            <div className="flex gap-8 items-center">
+              <a
+                href="mailto:harits.taqiy10@gmail.com"
+                className="group flex flex-col items-end"
+              >
+                <span className="text-[10px] text-stone-400 uppercase tracking-widest mb-1 group-hover:text-stone-900 transition-colors">Email</span>
+                <span className="text-sm font-medium text-stone-600 group-hover:text-stone-900 transition-colors">harits.taqiy10@gmail.com</span>
+              </a>
+
+              <div className="w-px h-8 bg-stone-200 hidden md:block" />
+
+              <a
+                href="https://www.instagram.com/harits.taqiy/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col items-end"
+              >
+                <span className="text-[10px] text-stone-400 uppercase tracking-widest mb-1 group-hover:text-stone-900 transition-colors">Instagram</span>
+                <span className="text-sm font-medium text-stone-600 group-hover:text-stone-900 transition-colors">@harits.taqiy</span>
+              </a>
+            </div>
           </div>
-          <p className="text-stone-400 text-sm">© {new Date().getFullYear()} Harth Gallery. Curated with React & Gemini.</p>
+          <p className="text-stone-400 text-[10px] uppercase tracking-widest pt-8">© {new Date().getFullYear()} Harth Gallery. Built with passion & precision.</p>
         </footer>
       </div>
     </motion.section>
