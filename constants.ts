@@ -186,9 +186,9 @@ export const ART_GALLERY: ArtPiece[] = [
   },
   {
     id: 'a9',
-    title: 'Ancient Relic',
+    title: 'Killer Axe',
     imageUrl: '/assets/arts/Killer Axe.webp',
-    medium: '3D Render / Paint',
+    medium: 'Paint',
     quote: "Every scratch tells a story of a battle won.",
     timeSpent: "15 Hours",
     dimensions: "2000 x 3000px"
