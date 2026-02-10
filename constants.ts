@@ -11,7 +11,7 @@ export const DESIGN_PROJECTS: Project[] = [
     orientation: 'landscape',
     client: 'TICCIT Program',
     deliverables: ['Social Media Assets', 'Educational Posters', 'Presentation Deck'],
-    tools: ['Illustrator', 'Photoshop'],
+    tools: ['Photoshop'],
   },
   {
     id: '2',
@@ -23,7 +23,7 @@ export const DESIGN_PROJECTS: Project[] = [
     orientation: 'landscape',
     client: 'LinkUMKM',
     deliverables: ['Web Banner', 'Slider Design', 'Visual Hierarchy'],
-    tools: ['Figma', 'Photoshop'],
+    tools: ['Photoshop'],
   },
   {
     id: '3',
@@ -35,7 +35,7 @@ export const DESIGN_PROJECTS: Project[] = [
     orientation: 'square',
     client: 'LDK Organization',
     deliverables: ['Logo System', 'Visual Identity', 'Event Materials'],
-    tools: ['Illustrator', 'Figma'],
+    tools: ['Illustrator'],
   },
   {
     id: '4',
@@ -47,7 +47,7 @@ export const DESIGN_PROJECTS: Project[] = [
     orientation: 'landscape',
     client: 'LDK FIKRI PNJ & DKM PNJ',
     deliverables: ['Information Banner', 'Visual Communication'],
-    tools: ['Photoshop', 'Canva'],
+    tools: ['Photoshop'],
   },
   {
     id: '5',
@@ -59,7 +59,7 @@ export const DESIGN_PROJECTS: Project[] = [
     orientation: 'portrait',
     client: 'Masjid Darul Ilmi PNJ',
     deliverables: ['Campaign Poster', 'Pricing Graphics'],
-    tools: ['Photoshop', 'Illustrator'],
+    tools: ['Photoshop'],
   },
   {
     id: '6',
@@ -96,6 +96,18 @@ export const DESIGN_PROJECTS: Project[] = [
     client: 'LDK FIKRI',
     deliverables: ['Mascot Design', 'Banner Layout'],
     tools: ['Procreate'],
+  },
+  {
+    id: '9',
+    title: 'Business Capital Loan Banner',
+    category: 'Digital Promotion',
+    imageUrl: '/assets/projects/Banner Pinjaman Butuh Modal.jpg',
+    description: 'A professional promotional banner for business capital loans, designed for LinkUMKM applications.',
+    year: '2023',
+    orientation: 'landscape',
+    client: 'BPR HANEDA',
+    deliverables: ['Promotional Banner', 'Typography Design'],
+    tools: ['Photoshop'],
   }
 ];
 

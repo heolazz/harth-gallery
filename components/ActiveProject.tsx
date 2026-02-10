@@ -50,12 +50,7 @@ const ActiveProject: React.FC<ActiveProjectProps> = ({ project, onClose }) => {
                             className="block w-auto h-auto max-w-full max-h-[80vh] md:max-h-[85vh] object-contain transition-all duration-1000 grayscale-0"
                         />
 
-                        {/* Year Label - Tucked away */}
-                        <div className="absolute top-4 left-4 mix-blend-difference">
-                            <span className="text-[9px] font-bold tracking-[0.3em] text-white/30 uppercase">
-                                {project.year}
-                            </span>
-                        </div>
+
                     </motion.div>
                 </div>
 
