@@ -3,6 +3,7 @@ export interface Project {
   title: string;
   category: string;
   imageUrl: string;
+  gallery?: string[];
   description: string;
   year: string;
   orientation?: 'portrait' | 'landscape' | 'square';

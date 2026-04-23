@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { X, ArrowUpRight, Clock, Ruler, Paintbrush } from 'lucide-react';
 import { PortfolioItem, Project, ArtPiece } from '../types';
@@ -9,6 +9,8 @@ interface DetailModalProps {
 }
 
 const DetailModal: React.FC<DetailModalProps> = ({ item, onClose }) => {
+  const [activeImage, setActiveImage] = useState(item.imageUrl);
+
   // Lock body scroll when modal is open
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -53,15 +55,34 @@ const DetailModal: React.FC<DetailModalProps> = ({ item, onClose }) => {
         {isProject(item) ? (
           // ==================== DESIGN LAYOUT (Split View) ====================
           <>
-            {/* Left: Image */}
-            <div className="w-full md:w-3/5 h-[40vh] md:h-full relative bg-stone-200">
-              <motion.img
-                layoutId={`image-${item.id}`}
-                src={item.imageUrl}
-                alt={item.title}
-                className="w-full h-full object-cover"
-              />
-               <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 to-transparent opacity-60 pointer-events-none" />
+            {/* Left: Image / Gallery */}
+            <div className="w-full md:w-3/5 h-[45vh] md:h-full relative bg-stone-200 flex flex-col">
+              <div className="flex-1 relative overflow-hidden">
+                <motion.img
+                  key={activeImage}
+                  layoutId={activeImage === item.imageUrl ? `image-${item.id}` : undefined}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  src={activeImage}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 to-transparent opacity-60 pointer-events-none" />
+              </div>
+
+              {/* Gallery Thumbnails */}
+              {isProject(item) && item.gallery && item.gallery.length > 0 && (
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 px-4 py-3 bg-white/10 backdrop-blur-md rounded-full border border-white/20 z-10">
+                  {item.gallery.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveImage(img)}
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${activeImage === img ? 'bg-white w-8' : 'bg-white/40 hover:bg-white/60'
+                        }`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Right: Content */}
@@ -104,9 +125,9 @@ const DetailModal: React.FC<DetailModalProps> = ({ item, onClose }) => {
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-2">Tools</h4>
                     <div className="flex flex-wrap gap-2">
-                        {item.tools?.map((t, i) => (
-                             <span key={i} className="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded">{t}</span>
-                        ))}
+                      {item.tools?.map((t, i) => (
+                        <span key={i} className="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded">{t}</span>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -125,69 +146,69 @@ const DetailModal: React.FC<DetailModalProps> = ({ item, onClose }) => {
           // ==================== ART LAYOUT (Centered/Cinematic) ====================
           <div className="w-full h-full flex flex-col md:flex-row bg-stone-100">
             {/* Image Section - Dominant */}
-             <div className="w-full md:w-2/3 h-[50vh] md:h-full relative p-4 md:p-8 flex items-center justify-center bg-stone-200/50">
-                <motion.div 
-                    layoutId={`container-inner-${item.id}`}
-                    className="relative w-full h-full flex items-center justify-center shadow-lg md:shadow-2xl overflow-hidden"
-                >
-                    <motion.img
-                        layoutId={`image-${item.id}`}
-                        src={item.imageUrl}
-                        alt={item.title}
-                        className="max-w-full max-h-full object-contain"
-                    />
-                </motion.div>
-             </div>
+            <div className="w-full md:w-2/3 h-[50vh] md:h-full relative p-4 md:p-8 flex items-center justify-center bg-stone-200/50">
+              <motion.div
+                layoutId={`container-inner-${item.id}`}
+                className="relative w-full h-full flex items-center justify-center shadow-lg md:shadow-2xl overflow-hidden"
+              >
+                <motion.img
+                  layoutId={`image-${item.id}`}
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className="max-w-full max-h-full object-contain"
+                />
+              </motion.div>
+            </div>
 
-             {/* Info Section - Minimalist Side Panel */}
-             <div className="w-full md:w-1/3 h-full overflow-y-auto bg-white border-l border-stone-200 p-8 md:p-12 flex flex-col justify-center">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="space-y-8"
-                >
+            {/* Info Section - Minimalist Side Panel */}
+            <div className="w-full md:w-1/3 h-full overflow-y-auto bg-white border-l border-stone-200 p-8 md:p-12 flex flex-col justify-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="space-y-8"
+              >
+                <div>
+                  <h2 className="text-3xl md:text-5xl font-serif text-stone-900 mb-3">
+                    {item.title}
+                  </h2>
+                  <span className="text-stone-500 uppercase tracking-widest text-xs font-medium border-b border-stone-200 pb-1">
+                    {item.medium}
+                  </span>
+                </div>
+
+                <blockquote className="border-l-2 border-stone-300 pl-4 py-1">
+                  <p className="text-stone-600 font-serif italic text-lg leading-relaxed">
+                    "{item.quote || 'Art speaks where words are unable to explain.'}"
+                  </p>
+                </blockquote>
+
+                {/* Technical Specs */}
+                <div className="grid grid-cols-1 gap-6 pt-8 border-t border-stone-100">
+                  <div className="flex items-center gap-3">
+                    <Clock className="w-4 h-4 text-stone-400" />
                     <div>
-                        <h2 className="text-3xl md:text-5xl font-serif text-stone-900 mb-3">
-                        {item.title}
-                        </h2>
-                        <span className="text-stone-500 uppercase tracking-widest text-xs font-medium border-b border-stone-200 pb-1">
-                            {item.medium}
-                        </span>
+                      <h4 className="text-xs font-bold uppercase text-stone-400">Time Spent</h4>
+                      <p className="text-sm text-stone-800">{item.timeSpent || 'Unknown'}</p>
                     </div>
-
-                    <blockquote className="border-l-2 border-stone-300 pl-4 py-1">
-                        <p className="text-stone-600 font-serif italic text-lg leading-relaxed">
-                            "{item.quote || 'Art speaks where words are unable to explain.'}"
-                        </p>
-                    </blockquote>
-
-                    {/* Technical Specs */}
-                    <div className="grid grid-cols-1 gap-6 pt-8 border-t border-stone-100">
-                        <div className="flex items-center gap-3">
-                            <Clock className="w-4 h-4 text-stone-400" />
-                            <div>
-                                <h4 className="text-xs font-bold uppercase text-stone-400">Time Spent</h4>
-                                <p className="text-sm text-stone-800">{item.timeSpent || 'Unknown'}</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <Ruler className="w-4 h-4 text-stone-400" />
-                            <div>
-                                <h4 className="text-xs font-bold uppercase text-stone-400">Dimensions</h4>
-                                <p className="text-sm text-stone-800">{item.dimensions || 'Variable'}</p>
-                            </div>
-                        </div>
-                         <div className="flex items-center gap-3">
-                            <Paintbrush className="w-4 h-4 text-stone-400" />
-                            <div>
-                                <h4 className="text-xs font-bold uppercase text-stone-400">Original Medium</h4>
-                                <p className="text-sm text-stone-800">{item.medium}</p>
-                            </div>
-                        </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Ruler className="w-4 h-4 text-stone-400" />
+                    <div>
+                      <h4 className="text-xs font-bold uppercase text-stone-400">Dimensions</h4>
+                      <p className="text-sm text-stone-800">{item.dimensions || 'Variable'}</p>
                     </div>
-                </motion.div>
-             </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Paintbrush className="w-4 h-4 text-stone-400" />
+                    <div>
+                      <h4 className="text-xs font-bold uppercase text-stone-400">Original Medium</h4>
+                      <p className="text-sm text-stone-800">{item.medium}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </div>
         )}
       </motion.div>

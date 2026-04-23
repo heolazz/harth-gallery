@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Project } from '../types';
 import { motion } from 'framer-motion';
-import { X, ArrowUpRight } from 'lucide-react';
+import { X, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ActiveProjectProps {
     project: Project;
@@ -9,6 +9,37 @@ interface ActiveProjectProps {
 }
 
 const ActiveProject: React.FC<ActiveProjectProps> = ({ project, onClose }) => {
+    const [activeImage, setActiveImage] = useState(project.imageUrl);
+
+    const handleNext = (e?: React.MouseEvent) => {
+        e?.stopPropagation();
+        if (!project.gallery) return;
+        const currentIndex = project.gallery.indexOf(activeImage);
+        const nextIndex = (currentIndex + 1) % project.gallery.length;
+        setActiveImage(project.gallery[nextIndex]);
+    };
+
+    const handlePrev = (e?: React.MouseEvent) => {
+        e?.stopPropagation();
+        if (!project.gallery) return;
+        const currentIndex = project.gallery.indexOf(activeImage);
+        const prevIndex = (currentIndex - 1 + project.gallery.length) % project.gallery.length;
+        setActiveImage(project.gallery[prevIndex]);
+    };
+
+    // Keyboard support
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'ArrowRight') handleNext();
+            if (e.key === 'ArrowLeft') handlePrev();
+            if (e.key === 'Escape') onClose();
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [activeImage]);
+
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
 
@@ -44,11 +75,44 @@ const ActiveProject: React.FC<ActiveProjectProps> = ({ project, onClose }) => {
                         className="relative w-auto h-auto max-w-[90%] max-h-[90%] bg-white p-2 md:p-3 shadow-[0_20px_60px_rgba(0,0,0,0.05)] border border-stone-200 flex items-center justify-center group"
                     >
                         <motion.img
-                            layoutId={`image-${project.id}`}
-                            src={project.imageUrl}
+                            key={activeImage}
+                            layoutId={activeImage === project.imageUrl ? `image-${project.id}` : undefined}
+                            src={activeImage}
                             alt={project.title}
                             className="block w-auto h-auto max-w-full max-h-[80vh] md:max-h-[85vh] object-contain transition-all duration-1000 grayscale-0"
                         />
+
+                        {/* Navigation Arrows */}
+                        {project.gallery && project.gallery.length > 1 && (
+                            <>
+                                <button
+                                    onClick={handlePrev}
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-white/20 hover:bg-white/40 backdrop-blur-md rounded-full text-stone-900 md:text-stone-500 hover:text-stone-900 transition-all border border-transparent hover:border-stone-300 opacity-0 group-hover:opacity-100"
+                                >
+                                    <ChevronLeft size={24} />
+                                </button>
+                                <button
+                                    onClick={handleNext}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-white/20 hover:bg-white/40 backdrop-blur-md rounded-full text-stone-900 md:text-stone-500 hover:text-stone-900 transition-all border border-transparent hover:border-stone-300 opacity-0 group-hover:opacity-100"
+                                >
+                                    <ChevronRight size={24} />
+                                </button>
+                            </>
+                        )}
+
+                        {/* Gallery Pagination / Dots */}
+                        {project.gallery && project.gallery.length > 1 && (
+                            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex gap-3 px-4 py-2 bg-stone-100/50 backdrop-blur-sm rounded-full border border-stone-200">
+                                {project.gallery.map((img, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={(e) => { e.stopPropagation(); setActiveImage(img); }}
+                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${activeImage === img ? 'bg-stone-900 w-6' : 'bg-stone-300 hover:bg-stone-400'
+                                            }`}
+                                    />
+                                ))}
+                            </div>
+                        )}
 
 
                     </motion.div>
